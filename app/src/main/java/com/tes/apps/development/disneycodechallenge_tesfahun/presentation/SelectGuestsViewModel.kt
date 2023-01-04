@@ -1,15 +1,13 @@
 package com.tes.apps.development.disneycodechallenge_tesfahun.presentation
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
+import kotlin.text.Typography.dagger
 
 
-@HiltViewModel
-class SelectGuestsViewModel @Inject constructor(
+class SelectGuestsViewModel(
 
 ):ViewModel() {
 
