@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tes.apps.development.disneycodechallenge_tesfahun.presentation.LoginScreen
 import com.tes.apps.development.disneycodechallenge_tesfahun.presentation.SelectGuestScreen
 import com.tes.apps.development.disneycodechallenge_tesfahun.ui.theme.DisneyCodeChallenge_TesfahunTheme
 
@@ -35,7 +36,9 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun GuestsListProvider(){
         val navController = rememberNavController()
+
         SelectGuestScreen(navController=navController, continueButton = {})
+
     }
 
     @Composable

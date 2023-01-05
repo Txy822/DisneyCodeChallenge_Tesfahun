@@ -1,7 +1,6 @@
 package com.tes.apps.development.disneycodechallenge_tesfahun.presentation
 
 import android.util.Log
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,13 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,129 +26,22 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 
-
 @Composable
-fun Guest(
-    name: String,
-    id: String,
-    checked: Boolean,
-    okToProceed: () -> Unit,
-    onCheckedChange: ((Boolean) -> Unit)
-) {
-    Row(verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.small)
-            .requiredHeight(ButtonDefaults.MinHeight)
-            .padding(4.dp)) {
-        val isChecked = remember { mutableStateOf(checked) }
-
-        Checkbox(
-            checked = isChecked.value,
-            onCheckedChange = {
-                isChecked.value = it
-                if(id.equals("haveReservation") && it){
-                    okToProceed
-                }
-            },
-            colors = CheckboxDefaults.colors(Color.Green)
-        )
-        Text(text = name)
-    }
-}
-
-@Composable
-fun Guests(
-    names: List<String>,
-    id: String,
-    okToProceed: () -> Unit) {
-    Column() {
-        names.forEach {
-            Guest(name = it,id, false,okToProceed){}
-        }
-    }
-}
-
-@Composable
-fun SelectGuests(
-    modifier: Modifier = Modifier,
-    okToProceed: () -> Unit,
+fun SelectGuestScreen(
+    continueButton: () -> Unit,
+    navController: NavController,
 
     ) {
-    Column(modifier = modifier
-        //.height(500.dp)
-        .verticalScroll(state = rememberScrollState())
-    ) {
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Text(text = "These Guests Have Reservations", fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 18.dp),
-            fontSize = 20.sp
-        )
-        Spacer(modifier = Modifier.height(14.dp))
-
-        Guests(names = listOf("David Oconnor", "Kelsey Stevenson" , "John Lynch", "Martin Rasmussen"),"haveReservation",okToProceed)
-
-       // Guests(names = listOf("David Oconnor", "Kelsey Stevenson" , "John Lynch", "Martin Rasmussen" , "Joshua Graham", "Carlos Lane" , "gamma", "Nicole Watkins" , "Jennifer Collins", "Alexander Hurst" , "Jordan Mills", "Mathew Young" , "Carrie Woods", "Elizabeth Pacheco" , "Heather Cunningham"),"haveReservation",okToProceed)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "These Guests Need Reservations", fontWeight = FontWeight.Bold,
-             modifier = Modifier.padding(start = 18.dp),
-             fontSize = 20.sp
-
-        )
-        Spacer(modifier = Modifier.height(14.dp))
-
-        Guests(names = listOf("Vincent Warner", "Shelly Wilson" , "Michael Wright", "Christian Richardson" , "Drew Garcia", "Dylan Reed"), "noReservation",okToProceed)
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row() {
-            Icon(imageVector = Icons.Default.Info, contentDescription = "Info icon", modifier = Modifier
-                .size(20.dp)
-                .padding(3.dp))
-            Text(fontSize = 12.sp,text = "At least one Guest in the party must have a reservation. Guests without reservations must remain in the same booking party in order to enter")
-        }
-    }
-}
-
-@Composable
-fun SelectGuestScreen(continueButton: () -> Unit,
-                      navController: NavController,
-
-                      ) {
     val okToProceed = remember {
         mutableStateOf(false)
     }
-    Column(modifier = Modifier
-        .padding(8.dp)){
-        TopAppBars(navController =navController )
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+    ) {
+        TopAppBars(navController = navController)
+        SelectGuests(navController)
 
-        SelectGuests(modifier = Modifier.weight(1f)){
-            okToProceed.value = true
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        var num=0
-        var enableButton=true
-        if(num>0){
-            enableButton=false
-        }
-        Button(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(),
-            onClick = {
-                if(okToProceed.value){
-                    Log.d("proceed","Ok to proceed")
-                }
-                num++
-            },
-            colors = ButtonDefaults.textButtonColors(
-                backgroundColor = Color.Blue,
-                contentColor = Color.Green,
-            disabledContentColor = Color.Red),
-            shape = RoundedCornerShape(50),
-            enabled = enableButton
-        ) {
-            Text(text = "Continue")
-        }
     }
 }
 
@@ -176,4 +69,247 @@ fun TopAppBars(navController: NavController) {
             }
         }
     )
+}
+
+@Composable
+fun SelectGuests(
+    navController: NavController,
+
+    ) {
+    Column(
+        Modifier
+            .fillMaxWidth().verticalScroll(state = rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val context = LocalContext.current
+
+        Spacer(modifier = Modifier.padding(10.dp))
+
+        val isChecked1 = remember { mutableStateOf(false) }
+        val isChecked2 = remember { mutableStateOf(false) }
+        val isChecked3 = remember { mutableStateOf(false) }
+        val isGuestHaveReserve = remember { mutableStateOf(false) }
+        val isGuestNeedReserve = remember { mutableStateOf(false) }
+        val namesOfGuestsHaveReservation = listOf(
+            "Vincent Warner",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson",
+            "Vincent Warner",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson",
+            "Vincent Warner",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson",
+            "Vincent Warner",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson",
+            "Vincent Warner",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson",
+            "Vincent Warner",
+            "Shelly Wilson",
+            "Michael Wright",
+            "Christian Richardson"
+
+
+            )
+        val namesOfGuestsNeedReservation =
+            listOf(
+                "David Oconnor",
+                "Kelsey Stevenson",
+                "John Lynch",
+                "Martin Rasmussen",
+                "Kelsey Stevenson"
+
+            )
+
+
+
+
+
+
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+        ) {
+            Text(
+                text = "These Guests Have Reservations", fontWeight = FontWeight.Bold,
+                fontSize = 12.sp
+            )
+            Spacer(modifier = Modifier.padding(8.dp))
+
+            GuestsHaveReservation(
+                isChecked3,
+                isGuestHaveReserve,
+                names = namesOfGuestsHaveReservation
+            )
+
+            Text(
+                text = "These Guests Need Reservations", fontWeight = FontWeight.Bold,
+                fontSize = 12.sp
+            )
+
+            Spacer(modifier = Modifier.padding(8.dp))
+            GuestsNeedReservation(
+                isChecked2,
+                isGuestNeedReserve,
+                names = namesOfGuestsNeedReservation
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(20.dp))
+        Row() {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "Info icon",
+                modifier = Modifier
+                    .size(20.dp)
+                    .padding(3.dp)
+            )
+            Text(
+                fontSize = 12.sp,
+                text = "At least one Guest in the party must have a reservation. Guests without reservations must remain in the same booking party in order to enter"
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(20.dp))
+
+        Button(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .padding(10.dp),
+            onClick = {
+                Log.i("Continue ", "Continue clicked")
+
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Green
+            ),
+            shape = RoundedCornerShape(30),
+            enabled = isGuestHaveReserve.value || (isGuestNeedReserve.value && isGuestHaveReserve.value)
+        ) {
+            Text(
+                text = "Continue",
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
+            )
+
+        }
+    }
+}
+
+
+@Composable
+fun GuestsHaveReservation(
+    isChecked: MutableState<Boolean>,
+    isGuestHaveReserve: MutableState<Boolean>,
+    names: List<String>
+) {
+    Column() {
+        names.forEach {
+            SingleGuestHaveReserve(name = it, checked = isChecked.value, isGuestHaveReserve = isGuestHaveReserve)
+            Spacer(modifier = Modifier.padding(8.dp))
+        }
+
+    }
+}
+
+@Composable
+fun GuestsNeedReservation(
+    isChecked: MutableState<Boolean>,
+    isGuestNeedReserve: MutableState<Boolean>,
+    names: List<String>
+) {
+    Column() {
+        names.forEach {
+            SingleGuestNeedReserve(name = it, checked = isChecked.value, isGuestNeedReserve = isGuestNeedReserve)
+            Spacer(modifier = Modifier.padding(8.dp))
+        }
+
+    }
+}
+
+@Composable
+fun SingleGuestNeedReserve(
+    name: String,
+    checked: Boolean,
+    isGuestNeedReserve: MutableState<Boolean>
+) {
+    val isChecked = remember { mutableStateOf(checked) }
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Checkbox(
+            checked = isChecked.value,
+            onCheckedChange = {
+                isChecked.value = it
+                isGuestNeedReserve.value = it
+            },
+            enabled = true,
+            colors = CheckboxDefaults.colors(Color.Gray),
+            modifier = Modifier
+                .padding(5.dp)
+                .size(3.dp),
+        )
+
+        Spacer(modifier = Modifier.padding(2.dp))
+
+        Text(
+            text = name,
+            modifier = Modifier.width(320.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+
+    }
+}
+
+@Composable
+fun SingleGuestHaveReserve(
+    name: String,
+    checked: Boolean,
+    isGuestHaveReserve: MutableState<Boolean>
+) {
+    val isChecked = remember { mutableStateOf(checked) }
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Checkbox(
+            checked = isChecked.value,
+            onCheckedChange = {
+                isChecked.value = it
+                isGuestHaveReserve.value = it
+            },
+            enabled = true,
+            colors = CheckboxDefaults.colors(Color.Gray),
+            modifier = Modifier
+                .padding(5.dp)
+                .size(3.dp),
+        )
+
+        Spacer(modifier = Modifier.padding(2.dp))
+
+        Text(
+            text = name,
+            modifier = Modifier.padding(start = 14.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp,
+            color = Color.Black
+        )
+
+    }
 }
