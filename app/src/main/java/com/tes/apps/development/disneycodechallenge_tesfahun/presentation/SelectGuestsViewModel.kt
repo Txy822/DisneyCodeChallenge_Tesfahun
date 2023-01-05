@@ -29,7 +29,7 @@ class SelectGuestsViewModel(
             if(haveValue==1) {
                 _uiState.update {
                     it.copy(
-                        countGuestsHaveReservation = haveValue - 1,
+                        countGuestsHaveReservation = 0,
                         guestHaveReservation = false
                     )
                 }
@@ -72,7 +72,7 @@ class SelectGuestsViewModel(
         }
         else if(!countUp &&needValue>0) {
             if(needValue==1){
-                _uiState.update { it.copy(countGuestsNeedReservation = needValue-1, guestNeedReservation = false) }
+                _uiState.update { it.copy(countGuestsNeedReservation = 0, guestNeedReservation = false) }
             }
             else {
                 _uiState.update { it.copy(countGuestsNeedReservation = needValue-1, guestNeedReservation = true) }
