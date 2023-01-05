@@ -12,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tes.apps.development.disneycodechallenge_tesfahun.presentation.LoginScreen
 import com.tes.apps.development.disneycodechallenge_tesfahun.presentation.SelectGuestScreen
 import com.tes.apps.development.disneycodechallenge_tesfahun.ui.theme.DisneyCodeChallenge_TesfahunTheme
 
@@ -21,12 +20,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DisneyCodeChallenge_TesfahunTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    //Greeting("Android")
                     GuestsListProvider()
                 }
             }
@@ -37,10 +34,9 @@ class MainActivity : ComponentActivity() {
     fun GuestsListProvider(){
         val navController = rememberNavController()
 
-        SelectGuestScreen(navController=navController, continueButton = {})
+        SelectGuestScreen(navController=navController)
 
     }
-
     @Composable
     fun Greeting(name: String) {
         Text(text = "Hello $name!")

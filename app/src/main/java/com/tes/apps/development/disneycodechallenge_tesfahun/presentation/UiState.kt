@@ -4,8 +4,8 @@ import android.media.Rating
 import com.tes.apps.development.disneycodechallenge_tesfahun.data.People
 
 data class UiState(
-    val shows: List<People> = emptyList(),
-    val isLoading:Boolean =false,
-    val id:Int=0,
-    val error:String=""
+    val guestNeedReservation:Boolean=false,
+    val guestHaveReservation:Boolean=false,
+    val countGuestsHaveReservation:Int=0,
+    val countGuestsNeedReservation:Int=0,
 )

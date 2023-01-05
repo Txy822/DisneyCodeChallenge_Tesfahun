@@ -9,10 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,19 +26,15 @@ import androidx.navigation.NavController
 
 @Composable
 fun SelectGuestScreen(
-    continueButton: () -> Unit,
     navController: NavController,
+    viewModel:SelectGuestsViewModel = viewModel()
 
     ) {
-    val okToProceed = remember {
-        mutableStateOf(false)
-    }
+
     Column(
-        modifier = Modifier
-            .padding(8.dp)
     ) {
         TopAppBars(navController = navController)
-        SelectGuests(navController)
+        SelectGuests(navController,viewModel)
 
     }
 }
@@ -74,22 +68,21 @@ fun TopAppBars(navController: NavController) {
 @Composable
 fun SelectGuests(
     navController: NavController,
-
+    viewModel: SelectGuestsViewModel,
     ) {
     Column(
         Modifier
-            .fillMaxWidth().verticalScroll(state = rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .verticalScroll(state = rememberScrollState()),
     ) {
         val context = LocalContext.current
 
         Spacer(modifier = Modifier.padding(10.dp))
 
-        val isChecked1 = remember { mutableStateOf(false) }
-        val isChecked2 = remember { mutableStateOf(false) }
-        val isChecked3 = remember { mutableStateOf(false) }
-        val isGuestHaveReserve = remember { mutableStateOf(false) }
-        val isGuestNeedReserve = remember { mutableStateOf(false) }
+        val uiState by viewModel.uiState.collectAsState()
+
+        val guestNeedReservationIsChecked = remember { mutableStateOf(false) }
+        val guestHaveReservationIsChecked = remember { mutableStateOf(false) }
         val namesOfGuestsHaveReservation = listOf(
             "Vincent Warner",
             "Shelly Wilson",
@@ -138,7 +131,7 @@ fun SelectGuests(
 
         Column(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(start=30.dp)
         ) {
             Text(
                 text = "These Guests Have Reservations", fontWeight = FontWeight.Bold,
@@ -147,9 +140,9 @@ fun SelectGuests(
             Spacer(modifier = Modifier.padding(8.dp))
 
             GuestsHaveReservation(
-                isChecked3,
-                isGuestHaveReserve,
-                names = namesOfGuestsHaveReservation
+                guestHaveReservationIsChecked,
+                names = namesOfGuestsHaveReservation,
+                viewModel
             )
 
             Text(
@@ -159,14 +152,14 @@ fun SelectGuests(
 
             Spacer(modifier = Modifier.padding(8.dp))
             GuestsNeedReservation(
-                isChecked2,
-                isGuestNeedReserve,
-                names = namesOfGuestsNeedReservation
+                guestNeedReservationIsChecked,
+                names = namesOfGuestsNeedReservation,
+                viewModel
             )
         }
 
         Spacer(modifier = Modifier.padding(20.dp))
-        Row() {
+        Row(modifier = Modifier.padding(10.dp)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = "Info icon",
@@ -174,6 +167,8 @@ fun SelectGuests(
                     .size(20.dp)
                     .padding(3.dp)
             )
+            Spacer(modifier = Modifier.padding(8.dp))
+
             Text(
                 fontSize = 12.sp,
                 text = "At least one Guest in the party must have a reservation. Guests without reservations must remain in the same booking party in order to enter"
@@ -181,6 +176,9 @@ fun SelectGuests(
         }
 
         Spacer(modifier = Modifier.padding(20.dp))
+
+        println("State values count  Need: ${uiState.countGuestsNeedReservation} count Have:  ${uiState.countGuestsHaveReservation}")
+        println("State values is Need: ${uiState.guestNeedReservation}     is  Have:  ${uiState.guestHaveReservation}")
 
         Button(
             modifier = Modifier
@@ -195,7 +193,9 @@ fun SelectGuests(
                 backgroundColor = Color.Green
             ),
             shape = RoundedCornerShape(30),
-            enabled = isGuestHaveReserve.value || (isGuestNeedReserve.value && isGuestHaveReserve.value)
+           // enabled = isGuestHaveReserve.value || (isGuestNeedReserve.value && isGuestHaveReserve.value)
+            enabled = (uiState.guestHaveReservation || (uiState.guestNeedReservation && uiState.guestHaveReservation))
+
         ) {
             Text(
                 text = "Continue",
@@ -213,12 +213,12 @@ fun SelectGuests(
 @Composable
 fun GuestsHaveReservation(
     isChecked: MutableState<Boolean>,
-    isGuestHaveReserve: MutableState<Boolean>,
-    names: List<String>
+    names: List<String>,
+    viewModel: SelectGuestsViewModel
 ) {
     Column() {
         names.forEach {
-            SingleGuestHaveReserve(name = it, checked = isChecked.value, isGuestHaveReserve = isGuestHaveReserve)
+            SingleGuestHaveReserve(name = it, checked = isChecked.value, viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
         }
 
@@ -228,12 +228,12 @@ fun GuestsHaveReservation(
 @Composable
 fun GuestsNeedReservation(
     isChecked: MutableState<Boolean>,
-    isGuestNeedReserve: MutableState<Boolean>,
-    names: List<String>
+    names: List<String>,
+    viewModel: SelectGuestsViewModel
 ) {
     Column() {
         names.forEach {
-            SingleGuestNeedReserve(name = it, checked = isChecked.value, isGuestNeedReserve = isGuestNeedReserve)
+            SingleGuestNeedReserve(name = it, checked = isChecked.value, viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
         }
 
@@ -244,7 +244,7 @@ fun GuestsNeedReservation(
 fun SingleGuestNeedReserve(
     name: String,
     checked: Boolean,
-    isGuestNeedReserve: MutableState<Boolean>
+    viewModel: SelectGuestsViewModel
 ) {
     val isChecked = remember { mutableStateOf(checked) }
 
@@ -255,7 +255,8 @@ fun SingleGuestNeedReserve(
             checked = isChecked.value,
             onCheckedChange = {
                 isChecked.value = it
-                isGuestNeedReserve.value = it
+                viewModel.countNeedReservationGuest(it)
+              //  viewModel.isGuestNeedReservation(it)
             },
             enabled = true,
             colors = CheckboxDefaults.colors(Color.Gray),
@@ -268,10 +269,10 @@ fun SingleGuestNeedReserve(
 
         Text(
             text = name,
-            modifier = Modifier.width(320.dp),
+            modifier = Modifier.padding(start = 14.dp),
             textAlign = TextAlign.Center,
             fontSize = 12.sp,
-            color = Color.Gray
+            color = Color.Black
         )
 
     }
@@ -281,7 +282,7 @@ fun SingleGuestNeedReserve(
 fun SingleGuestHaveReserve(
     name: String,
     checked: Boolean,
-    isGuestHaveReserve: MutableState<Boolean>
+    viewModel: SelectGuestsViewModel
 ) {
     val isChecked = remember { mutableStateOf(checked) }
 
@@ -292,7 +293,9 @@ fun SingleGuestHaveReserve(
             checked = isChecked.value,
             onCheckedChange = {
                 isChecked.value = it
-                isGuestHaveReserve.value = it
+
+                viewModel.countHaveReservationGuest(it)
+               // viewModel.isGuestHaveReservation(it)
             },
             enabled = true,
             colors = CheckboxDefaults.colors(Color.Gray),
