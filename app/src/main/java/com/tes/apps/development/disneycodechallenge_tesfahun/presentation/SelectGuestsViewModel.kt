@@ -16,11 +16,7 @@ class SelectGuestsViewModel(
     val uiState:StateFlow<UiState> = _uiState.asStateFlow()
 
 
-
-
-
-
-    fun countHaveReservationGuest( countUp: Boolean) {
+    fun countHaveReservationGuests( countUp: Boolean) {
         var haveValue=_uiState.value.countGuestsHaveReservation
         if(countUp && haveValue>0) {
             haveValue=_uiState.value.countGuestsHaveReservation
@@ -68,7 +64,7 @@ class SelectGuestsViewModel(
             _uiState.update { it.copy(countGuestsHaveReservation = 0, guestHaveReservation = false) }
         }
     }
-    fun countNeedReservationGuest(countUp: Boolean){
+    fun countNeedReservationGuests(countUp: Boolean){
         val needValue=_uiState.value.countGuestsNeedReservation
 
         if(countUp && needValue>0) {

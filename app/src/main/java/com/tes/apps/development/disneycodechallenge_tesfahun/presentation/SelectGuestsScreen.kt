@@ -92,26 +92,6 @@ fun SelectGuests(
             "Shelly Wilson",
             "Michael Wright",
             "Christian Richardson",
-            "Vincent Warner",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson",
-            "Vincent Warner",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson",
-            "Vincent Warner",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson",
-            "Vincent Warner",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson"
-
 
             )
         val namesOfGuestsNeedReservation =
@@ -121,14 +101,7 @@ fun SelectGuests(
                 "John Lynch",
                 "Martin Rasmussen",
                 "Kelsey Stevenson"
-
             )
-
-
-
-
-
-
         Column(
             modifier = Modifier
                 .padding(start=30.dp)
@@ -158,8 +131,8 @@ fun SelectGuests(
             )
         }
 
-        Spacer(modifier = Modifier.padding(20.dp))
-        Row(modifier = Modifier.padding(10.dp)) {
+        Spacer(modifier = Modifier.padding(10.dp))
+        Row(modifier = Modifier.padding(20.dp)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = "Info icon",
@@ -175,25 +148,21 @@ fun SelectGuests(
             )
         }
 
-        Spacer(modifier = Modifier.padding(20.dp))
-
-        println("State values count  Need: ${uiState.countGuestsNeedReservation} count Have:  ${uiState.countGuestsHaveReservation}")
-        println("State values is Need: ${uiState.guestNeedReservation}     is  Have:  ${uiState.guestHaveReservation}")
+        Spacer(modifier = Modifier.padding(10.dp))
 
         Button(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(20.dp),
             onClick = {
                 Log.i("Continue ", "Continue clicked")
 
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Green
+                backgroundColor = Color.Blue
             ),
-            shape = RoundedCornerShape(30),
-           // enabled = isGuestHaveReserve.value || (isGuestNeedReserve.value && isGuestHaveReserve.value)
+            shape = RoundedCornerShape(40),
             enabled = (uiState.guestHaveReservation || (uiState.guestNeedReservation && uiState.guestHaveReservation))
 
         ) {
@@ -255,8 +224,7 @@ fun SingleGuestNeedReserve(
             checked = isChecked.value,
             onCheckedChange = {
                 isChecked.value = it
-                viewModel.countNeedReservationGuest(it)
-              //  viewModel.isGuestNeedReservation(it)
+                viewModel.countNeedReservationGuests(it)
             },
             enabled = true,
             colors = CheckboxDefaults.colors(Color.Gray),
@@ -294,8 +262,7 @@ fun SingleGuestHaveReserve(
             onCheckedChange = {
                 isChecked.value = it
 
-                viewModel.countHaveReservationGuest(it)
-               // viewModel.isGuestHaveReservation(it)
+                viewModel.countHaveReservationGuests(it)
             },
             enabled = true,
             colors = CheckboxDefaults.colors(Color.Gray),
