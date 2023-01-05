@@ -75,7 +75,6 @@ fun SelectGuests(
             .fillMaxWidth()
             .verticalScroll(state = rememberScrollState()),
     ) {
-        val context = LocalContext.current
 
         Spacer(modifier = Modifier.padding(10.dp))
 
