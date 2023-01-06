@@ -1,6 +1,8 @@
 package com.tes.apps.development.disneycodechallenge_tesfahun.presentation
 
 import android.util.Log
+import android.view.Gravity
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -27,14 +30,14 @@ import androidx.navigation.NavController
 @Composable
 fun SelectGuestScreen(
     navController: NavController,
-    viewModel:SelectGuestsViewModel = viewModel()
+    viewModel: SelectGuestsViewModel = viewModel()
 
-    ) {
+) {
 
     Column(
     ) {
         TopAppBars(navController = navController)
-        SelectGuests(navController,viewModel)
+        SelectGuests(navController, viewModel)
 
     }
 }
@@ -69,7 +72,7 @@ fun TopAppBars(navController: NavController) {
 fun SelectGuests(
     navController: NavController,
     viewModel: SelectGuestsViewModel,
-    ) {
+) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -103,7 +106,7 @@ fun SelectGuests(
             )
         Column(
             modifier = Modifier
-                .padding(start=30.dp)
+                .padding(start = 30.dp)
         ) {
             Text(
                 text = "These Guests Have Reservations", fontWeight = FontWeight.Bold,
@@ -148,21 +151,28 @@ fun SelectGuests(
         }
 
         Spacer(modifier = Modifier.padding(10.dp))
-
+        val contex = LocalContext.current
         Button(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
                 .padding(20.dp),
             onClick = {
-                Log.i("Continue ", "Continue clicked")
+
+                if (uiState.guestHaveReservation || (uiState.guestHaveReservation && uiState.guestNeedReservation) ) {
+                    Toast.makeText(contex, " To Confirmation Screen", Toast.LENGTH_SHORT).show()
+                }
+                else if (!uiState.guestHaveReservation && uiState.guestNeedReservation ) {
+                    Toast.makeText(contex, " Reservation Needed, Select at least one Guest that has a reservation", Toast.LENGTH_SHORT).show()
+
+                }
 
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Blue
             ),
             shape = RoundedCornerShape(40),
-            enabled = (uiState.guestHaveReservation || (uiState.guestNeedReservation && uiState.guestHaveReservation))
+            enabled = (uiState.guestHaveReservation || uiState.guestNeedReservation )
 
         ) {
             Text(
