@@ -106,7 +106,7 @@ fun SelectGuests(
             )
         Column(
             modifier = Modifier
-                .padding(start = 30.dp)
+                .padding(start = 16.dp)
         ) {
             Text(
                 text = "These Guests Have Reservations", fontWeight = FontWeight.Bold,
@@ -151,7 +151,7 @@ fun SelectGuests(
         }
 
         Spacer(modifier = Modifier.padding(10.dp))
-        val contex = LocalContext.current
+        val context = LocalContext.current
         Button(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -160,13 +160,13 @@ fun SelectGuests(
             onClick = {
 
                 if (uiState.guestHaveReservation && (!uiState.guestNeedReservation) ) {
-                    Toast.makeText(contex, " To Confirmation Screen", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, " To Confirmation Screen", Toast.LENGTH_SHORT).show()
                 }
                 else if (!uiState.guestHaveReservation && uiState.guestNeedReservation ) {
-                    Toast.makeText(contex, " Reservation Needed, Select at least one Guest that has a reservation", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, " Reservation Needed, Select at least one Guest that has a reservation", Toast.LENGTH_SHORT).show()
                 }
                 else if (uiState.guestHaveReservation && uiState.guestNeedReservation ) {
-                    Toast.makeText(contex, " Mixed party, To Conflict Screen", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, " Mixed party, To Conflict Screen", Toast.LENGTH_SHORT).show()
                 }
 
             },
