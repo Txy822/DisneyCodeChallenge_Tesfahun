@@ -4,10 +4,12 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
@@ -73,40 +75,65 @@ fun SelectGuests(
     navController: NavController,
     viewModel: SelectGuestsViewModel,
 ) {
+
+    val uiState by viewModel.uiState.collectAsState()
+
+    val guestNeedReservationIsChecked = remember { mutableStateOf(false) }
+    val guestHaveReservationIsChecked = remember { mutableStateOf(false) }
+    val namesOfGuestsHaveReservation = listOf(
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Christian Richardson",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Christian Richardson",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Christian Richardson",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+        "Christian Richardson",
+        "Vincent Warner",
+        "Shelly Wilson",
+        "Michael Wright",
+
+
+
+        )
+    val namesOfGuestsNeedReservation =
+        listOf(
+            "David Oconnor",
+            "Kelsey Stevenson",
+            "John Lynch",
+            "Martin Rasmussen",
+            "Kelsey Stevenson",
+            "John Lynch",
+            "John Lynch",
+        )
+
     Column(
-        Modifier
-            .fillMaxWidth()
-            .verticalScroll(state = rememberScrollState()),
+        modifier = Modifier
+            .padding(start = 16.dp)
+            .fillMaxSize()
     ) {
 
         Spacer(modifier = Modifier.padding(10.dp))
-
-        val uiState by viewModel.uiState.collectAsState()
-
-        val guestNeedReservationIsChecked = remember { mutableStateOf(false) }
-        val guestHaveReservationIsChecked = remember { mutableStateOf(false) }
-        val namesOfGuestsHaveReservation = listOf(
-            "Vincent Warner",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson",
-            "Vincent Warner",
-            "Shelly Wilson",
-            "Michael Wright",
-            "Christian Richardson",
-
-            )
-        val namesOfGuestsNeedReservation =
-            listOf(
-                "David Oconnor",
-                "Kelsey Stevenson",
-                "John Lynch",
-                "Martin Rasmussen",
-                "Kelsey Stevenson"
-            )
         Column(
             modifier = Modifier
-                .padding(start = 16.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 text = "These Guests Have Reservations", fontWeight = FontWeight.Bold,
@@ -119,6 +146,7 @@ fun SelectGuests(
                 names = namesOfGuestsHaveReservation,
                 viewModel
             )
+            Spacer(modifier = Modifier.padding(8.dp))
 
             Text(
                 text = "These Guests Need Reservations", fontWeight = FontWeight.Bold,
@@ -133,8 +161,8 @@ fun SelectGuests(
             )
         }
 
-        Spacer(modifier = Modifier.padding(10.dp))
-        Row(modifier = Modifier.padding(20.dp)) {
+        Spacer(modifier = Modifier.padding(6.dp))
+        Row(modifier = Modifier.padding(end=10.dp)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = "Info icon",
@@ -142,7 +170,7 @@ fun SelectGuests(
                     .size(20.dp)
                     .padding(3.dp)
             )
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.padding(6.dp))
 
             Text(
                 fontSize = 12.sp,
@@ -150,13 +178,11 @@ fun SelectGuests(
             )
         }
 
-        Spacer(modifier = Modifier.padding(10.dp))
+        Spacer(modifier = Modifier.padding(6.dp))
         val context = LocalContext.current
         Button(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(20.dp),
+                .fillMaxWidth().padding(end=16.dp),
             onClick = {
 
                 if (uiState.guestHaveReservation && (!uiState.guestNeedReservation) ) {
@@ -187,6 +213,7 @@ fun SelectGuests(
 
         }
     }
+
 }
 
 
@@ -196,13 +223,30 @@ fun GuestsHaveReservation(
     names: List<String>,
     viewModel: SelectGuestsViewModel
 ) {
-    Column() {
+    /*
+    Column(modifier = Modifier.verticalScroll(state = rememberScrollState())) {
         names.forEach {
             SingleGuestHaveReserve(name = it, checked = isChecked.value, viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
         }
 
     }
+*/
+    LazyColumn(modifier = Modifier.fillMaxWidth()
+                         .size(240.dp)
+    ){
+        items(names.size) { i ->
+            val name=names[i]
+            if (i == 0) {
+                Spacer(modifier = Modifier.padding(1.dp))
+            }
+            SingleGuestHaveReserve(name = name, checked = isChecked.value, viewModel)
+            if (i < names.size) {
+                Spacer(modifier = Modifier.padding(8.dp))
+            }
+        }
+    }
+
 }
 
 @Composable
@@ -211,13 +255,28 @@ fun GuestsNeedReservation(
     names: List<String>,
     viewModel: SelectGuestsViewModel
 ) {
-    Column() {
+    /*
+    Column(modifier = Modifier.verticalScroll(state = rememberScrollState())) {
         names.forEach {
             SingleGuestNeedReserve(name = it, checked = isChecked.value, viewModel)
             Spacer(modifier = Modifier.padding(8.dp))
         }
 
     }
+    */
+    LazyColumn(modifier = Modifier.fillMaxWidth().size(240.dp)){
+        items(names.size) { i ->
+            val name=names[i]
+            if (i == 0) {
+                Spacer(modifier = Modifier.padding(1.dp))
+            }
+            SingleGuestNeedReserve(name = name, checked = isChecked.value, viewModel)
+            if (i < names.size) {
+                Spacer(modifier = Modifier.padding(8.dp))
+            }
+        }
+    }
+
 }
 
 @Composable
