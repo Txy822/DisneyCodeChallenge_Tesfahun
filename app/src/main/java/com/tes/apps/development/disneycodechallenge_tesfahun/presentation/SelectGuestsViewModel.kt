@@ -11,14 +11,12 @@ class SelectGuestsViewModel(
 
 ):ViewModel() {
 
-
     private val _uiState =MutableStateFlow(UiState())
     val uiState:StateFlow<UiState> = _uiState.asStateFlow()
 
-
     fun countHaveReservationGuests( countUp: Boolean) {
         val haveValue=_uiState.value.countGuestsHaveReservation
-        if(countUp && haveValue>0) {
+        if(countUp && haveValue>=0) {
             _uiState.update { it.copy(countGuestsHaveReservation = haveValue +1,guestHaveReservation=true) }
         }
         else if(!countUp &&haveValue>0) {
@@ -39,13 +37,6 @@ class SelectGuestsViewModel(
                 }
             }
         }
-        else if(!countUp && haveValue==0) {
-            _uiState.update { it.copy(countGuestsHaveReservation = 0,guestHaveReservation = false) }
-        }
-        else if(countUp && haveValue==0) {
-            _uiState.update { it.copy(countGuestsHaveReservation = 1, guestHaveReservation = true) }
-
-        }
         else {
             _uiState.update { it.copy(countGuestsHaveReservation = 0, guestHaveReservation = false) }
         }
@@ -53,7 +44,7 @@ class SelectGuestsViewModel(
     fun countNeedReservationGuests(countUp: Boolean){
         val needValue=_uiState.value.countGuestsNeedReservation
 
-        if(countUp && needValue>0) {
+        if(countUp && needValue>=0) {
             _uiState.update { it.copy(countGuestsNeedReservation = needValue+1,guestNeedReservation=true) }
         }
         else if(!countUp &&needValue>0) {
@@ -64,12 +55,8 @@ class SelectGuestsViewModel(
                 _uiState.update { it.copy(countGuestsNeedReservation = needValue-1, guestNeedReservation = true) }
             }
         }
-        else if(!countUp && needValue==0) {
+        else {
             _uiState.update { it.copy(countGuestsNeedReservation = 0, guestNeedReservation = false) }
         }
-        else if(countUp && needValue==0) {
-            _uiState.update { it.copy(countGuestsNeedReservation = 1, guestNeedReservation = true) }
-        }
     }
-
 }
