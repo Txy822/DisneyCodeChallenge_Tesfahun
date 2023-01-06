@@ -164,7 +164,9 @@ fun SelectGuests(
                 }
                 else if (!uiState.guestHaveReservation && uiState.guestNeedReservation ) {
                     Toast.makeText(contex, " Reservation Needed, Select at least one Guest that has a reservation", Toast.LENGTH_SHORT).show()
-
+                }
+                else if (uiState.guestHaveReservation && uiState.guestNeedReservation ) {
+                    Toast.makeText(contex, " Mixed party, To Conflict Screen", Toast.LENGTH_SHORT).show()
                 }
 
             },
