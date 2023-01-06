@@ -226,7 +226,7 @@ fun SingleGuestNeedReserve(
                 viewModel.countNeedReservationGuests(it)
             },
             enabled = true,
-            colors = CheckboxDefaults.colors(Color.Gray),
+            colors = CheckboxDefaults.colors(Color.Green),
             modifier = Modifier
                 .padding(5.dp)
                 .size(3.dp),
@@ -264,7 +264,7 @@ fun SingleGuestHaveReserve(
                 viewModel.countHaveReservationGuests(it)
             },
             enabled = true,
-            colors = CheckboxDefaults.colors(Color.Gray),
+            colors = CheckboxDefaults.colors(Color.Green),
             modifier = Modifier
                 .padding(5.dp)
                 .size(3.dp),
