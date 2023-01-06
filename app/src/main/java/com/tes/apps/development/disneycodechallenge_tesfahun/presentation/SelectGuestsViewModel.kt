@@ -15,17 +15,14 @@ class SelectGuestsViewModel(
     private val _uiState =MutableStateFlow(UiState())
     val uiState:StateFlow<UiState> = _uiState.asStateFlow()
 
-
     fun countHaveReservationGuests( countUp: Boolean) {
         var haveValue=_uiState.value.countGuestsHaveReservation
         if(countUp && haveValue>0) {
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value 1 $haveValue")
             _uiState.update { it.copy(countGuestsHaveReservation = haveValue +1,guestHaveReservation=true) }
         }
         else if(!countUp &&haveValue>0) {
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value  before2 $haveValue")
             if(haveValue==1) {
                 _uiState.update {
                     it.copy(
@@ -43,24 +40,19 @@ class SelectGuestsViewModel(
                 }
             }
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value  after 2 $haveValue")
         }
         else if(!countUp && haveValue==0) {
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value 3 $haveValue")
             _uiState.update { it.copy(countGuestsHaveReservation = 0,guestHaveReservation = false) }
         }
         else if(countUp && haveValue==0) {
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value  before 4 $haveValue")
             _uiState.update { it.copy(countGuestsHaveReservation = 1, guestHaveReservation = true) }
 
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value  after 4 $haveValue")
         }
         else {
             haveValue=_uiState.value.countGuestsHaveReservation
-            println(" value 5 $haveValue")
             _uiState.update { it.copy(countGuestsHaveReservation = 0, guestHaveReservation = false) }
         }
     }
