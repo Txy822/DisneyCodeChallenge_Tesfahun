@@ -159,7 +159,7 @@ fun SelectGuests(
                 .padding(20.dp),
             onClick = {
 
-                if (uiState.guestHaveReservation || (uiState.guestHaveReservation && uiState.guestNeedReservation) ) {
+                if (uiState.guestHaveReservation && (!uiState.guestNeedReservation) ) {
                     Toast.makeText(contex, " To Confirmation Screen", Toast.LENGTH_SHORT).show()
                 }
                 else if (!uiState.guestHaveReservation && uiState.guestNeedReservation ) {
