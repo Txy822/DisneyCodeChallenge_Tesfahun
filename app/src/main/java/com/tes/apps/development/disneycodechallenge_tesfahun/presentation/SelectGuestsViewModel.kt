@@ -15,14 +15,13 @@ class SelectGuestsViewModel(
     private val _uiState =MutableStateFlow(UiState())
     val uiState:StateFlow<UiState> = _uiState.asStateFlow()
 
+
     fun countHaveReservationGuests( countUp: Boolean) {
-        var haveValue=_uiState.value.countGuestsHaveReservation
+        val haveValue=_uiState.value.countGuestsHaveReservation
         if(countUp && haveValue>0) {
-            haveValue=_uiState.value.countGuestsHaveReservation
             _uiState.update { it.copy(countGuestsHaveReservation = haveValue +1,guestHaveReservation=true) }
         }
         else if(!countUp &&haveValue>0) {
-            haveValue=_uiState.value.countGuestsHaveReservation
             if(haveValue==1) {
                 _uiState.update {
                     it.copy(
@@ -39,20 +38,15 @@ class SelectGuestsViewModel(
                     )
                 }
             }
-            haveValue=_uiState.value.countGuestsHaveReservation
         }
         else if(!countUp && haveValue==0) {
-            haveValue=_uiState.value.countGuestsHaveReservation
             _uiState.update { it.copy(countGuestsHaveReservation = 0,guestHaveReservation = false) }
         }
         else if(countUp && haveValue==0) {
-            haveValue=_uiState.value.countGuestsHaveReservation
             _uiState.update { it.copy(countGuestsHaveReservation = 1, guestHaveReservation = true) }
 
-            haveValue=_uiState.value.countGuestsHaveReservation
         }
         else {
-            haveValue=_uiState.value.countGuestsHaveReservation
             _uiState.update { it.copy(countGuestsHaveReservation = 0, guestHaveReservation = false) }
         }
     }
@@ -68,7 +62,6 @@ class SelectGuestsViewModel(
             }
             else {
                 _uiState.update { it.copy(countGuestsNeedReservation = needValue-1, guestNeedReservation = true) }
-
             }
         }
         else if(!countUp && needValue==0) {
