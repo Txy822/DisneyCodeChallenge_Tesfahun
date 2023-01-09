@@ -12,7 +12,9 @@ import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tes.apps.development.disneycodechallenge_tesfahun.presentation.SelectGuestScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tes.apps.development.disneycodechallenge_tesfahun.core.navigation.NavGraph
+import com.tes.apps.development.disneycodechallenge_tesfahun.presentation.SelectGuestsViewModel
 import com.tes.apps.development.disneycodechallenge_tesfahun.ui.theme.DisneyCodeChallenge_TesfahunTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,8 +35,10 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun GuestsListProvider(){
         val navController = rememberNavController()
+        val viewModel : SelectGuestsViewModel = viewModel()
 
-        SelectGuestScreen(navController=navController)
+        NavGraph(navController, viewModel)
+        //SelectGuestScreen(navController=navController)
 
     }
     @Composable

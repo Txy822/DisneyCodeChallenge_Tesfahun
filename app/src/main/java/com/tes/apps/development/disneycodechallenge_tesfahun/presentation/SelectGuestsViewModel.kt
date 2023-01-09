@@ -59,4 +59,7 @@ class SelectGuestsViewModel(
             _uiState.update { it.copy(countGuestsNeedReservation = 0, guestNeedReservation = false) }
         }
     }
+    fun initialiseStats(){
+        _uiState.update { it.copy(countGuestsNeedReservation = 0, guestNeedReservation = false, countGuestsHaveReservation = 0, guestHaveReservation = false) }
+    }
 }

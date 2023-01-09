@@ -1,5 +1,6 @@
 package com.tes.apps.development.disneycodechallenge_tesfahun.presentation
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,37 +17,28 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.tes.apps.development.disneycodechallenge_tesfahun.core.navigation.Screen
 
 
 @Composable
-fun ConfirmationScreen(navController: NavController, viewModel: SelectGuestsViewModel) {
+fun  HomeScreen(navController: NavController, viewModel: SelectGuestsViewModel) {
 
     // Launch a coroutine bound to the scope of the composable, viewModel relaunched
     LaunchedEffect(key1 = viewModel, block = {
         viewModel.initialiseStats()
     })
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Gray)
-    ) {
-        Column(Modifier.align(alignment = Alignment.Center)) {
-            Text(
-                text = "Confirmation Screen",
-                fontSize = 40.sp,
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-            )
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Gray)) {
+        Column( Modifier.align(alignment = Alignment.Center)) {
+            Text(text = "Home Screen",
+                fontSize = 40.sp, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(200.dp))
-            Button(
-                onClick = { navController.navigateUp() },
+            Button(onClick = { navController.navigate(Screen.GuestSelect.route)},
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Black
-                ),
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-                    .padding(32.dp),
+                    backgroundColor = Color.Black),
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally).fillMaxWidth().padding(32.dp),
                 shape = RoundedCornerShape(40)
 
             ) {
@@ -55,7 +47,7 @@ fun ConfirmationScreen(navController: NavController, viewModel: SelectGuestsView
                     fontSize = 12.sp,
                     modifier = Modifier.semantics {
                         contentDescription =
-                            "To Guest Select "
+                            " To Guest Select "
                     }
                 )
             }

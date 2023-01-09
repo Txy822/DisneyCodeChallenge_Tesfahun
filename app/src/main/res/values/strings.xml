@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">DisneyCodeChallenge_Tesfahun</string>
+    <string name="guest_elect">Guest Select</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="home">HomeRoute</string>
+    <string name="guest_not_selected">Guest  Unselected</string>
+    <string name="guest_selected">Guest Selected</string>
+    <string name="conflict">ConflictRout</string>
+    <string name="cd_navigate_up">Navigate Up</string>
+    <string name="select_guests">Select Guests</string>
+    <string name="these_guests_have_reservation">These Guests Have Reservations</string>
+    <string name="these_guests_need_reservation">These Guests Need Reservations</string>
+    <string name="info_icon">Info Icon</string>
+    <string name="info_description">At least one Guest in the party must have a reservation. Guests without reservations must remain in the same booking party in order to enter</string>
 </resources>

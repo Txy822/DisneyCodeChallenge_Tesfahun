@@ -17,36 +17,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-
 @Composable
-fun ConfirmationScreen(navController: NavController, viewModel: SelectGuestsViewModel) {
+fun  ConflictScreen(navController: NavController, viewModel: SelectGuestsViewModel) {
 
     // Launch a coroutine bound to the scope of the composable, viewModel relaunched
     LaunchedEffect(key1 = viewModel, block = {
         viewModel.initialiseStats()
     })
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Gray)
-    ) {
-        Column(Modifier.align(alignment = Alignment.Center)) {
-            Text(
-                text = "Confirmation Screen",
-                fontSize = 40.sp,
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-            )
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Gray)) {
+        Column( Modifier.align(alignment = Alignment.Center)) {
+            Text(text = "Conflict Screen",
+                fontSize = 40.sp, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(200.dp))
-            Button(
-                onClick = { navController.navigateUp() },
+            Button(onClick = { navController.navigateUp()},
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Black
-                ),
-                modifier = Modifier
-                    .align(alignment = Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-                    .padding(32.dp),
+                    backgroundColor = Color.Black),
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally).fillMaxWidth().padding(32.dp),
                 shape = RoundedCornerShape(40)
 
             ) {
@@ -55,7 +44,7 @@ fun ConfirmationScreen(navController: NavController, viewModel: SelectGuestsView
                     fontSize = 12.sp,
                     modifier = Modifier.semantics {
                         contentDescription =
-                            "To Guest Select "
+                            "To Guests Select"
                     }
                 )
             }
