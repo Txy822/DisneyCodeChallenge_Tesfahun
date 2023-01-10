@@ -124,7 +124,9 @@ fun SelectGuests(
             Text(text = stringResource(id = R.string.these_guests_have_reservation),
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                modifier = Modifier.semantics {
+                modifier = Modifier
+                    .semantics { heading() }
+                    .semantics {
                     contentDescription =
                         "These" + namesOfGuestsHaveReservation.size + "guests have Reservations and you selected total of " + uiState.countGuestsHaveReservation + "guests"
                 })
@@ -138,10 +140,13 @@ fun SelectGuests(
             Text(text = stringResource(id = R.string.these_guests_need_reservation),
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                modifier = Modifier.semantics {
+                modifier = Modifier
+                    .semantics { heading() }
+                    .semantics {
                     contentDescription =
-                        "These" + namesOfGuestsNeedReservation.size + "Guests Have Reservations and you selected total of " + uiState.countGuestsNeedReservation + "guests"
-                })
+                        "These" + namesOfGuestsNeedReservation.size + "Guests Need Reservations and you selected total of " + uiState.countGuestsNeedReservation + "guests"
+                }
+            )
 
             Spacer(modifier = Modifier.padding(8.dp))
             GuestsNeedReservation(
