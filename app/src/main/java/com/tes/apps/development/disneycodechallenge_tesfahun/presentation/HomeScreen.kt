@@ -34,7 +34,8 @@ fun  HomeScreen(navController: NavController, viewModel: SelectGuestsViewModel) 
         Column( Modifier.align(alignment = Alignment.Center)) {
             Text(text = "Home Screen",
                 fontSize = 40.sp, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
-            Spacer(modifier = Modifier.padding(200.dp))
+          //need improvement
+            Spacer(modifier = Modifier.padding(300.dp))
             Button(onClick = { navController.navigate(Screen.GuestSelect.route)},
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.Black),

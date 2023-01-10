@@ -200,7 +200,7 @@ fun SelectGuests(
             Text(text = "Continue", style = TextStyle(
                 fontSize = 18.sp,
                 color = Color.White,
-            ), modifier = Modifier.semantics {
+            ), modifier = Modifier.clearAndSetSemantics {
                 contentDescription = "Continue "
             })
         }
@@ -248,20 +248,19 @@ fun SingleGuestNeedReserve(
     viewModel: SelectGuestsViewModel,
 ) {
     var selected by remember { mutableStateOf(false) }
-    val state by viewModel.uiState.collectAsState()
-    val accessibilityDescriptionNameWithNumberOfListsSelected: String =
-        " $name" + "is Selected, and total of " + state.countGuestsNeedReservation + "guests are selected "
-    val accessibilityDescriptionNameWithNumberOfListsUnSelected: String =
-        " $name" + "is Un Selected , and total of " + state.countGuestsNeedReservation + "guests are selected "
+    val accessibilityDescriptionListsSelected: String =
+        " $name" + "is Selected "
+    val accessibilityDescriptionUnSelected: String =
+        " $name" + "is Un Selected"
 
     Row(horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .semantics(mergeDescendants = true) {}
             .semantics {
                 stateDescription = if (selected) {
-                    accessibilityDescriptionNameWithNumberOfListsSelected
+                    accessibilityDescriptionListsSelected
                 } else {
-                    accessibilityDescriptionNameWithNumberOfListsUnSelected
+                    accessibilityDescriptionUnSelected
                 }
             }
             .toggleable(
@@ -295,20 +294,19 @@ fun SingleGuestHaveReserve(
     name: String,
     viewModel: SelectGuestsViewModel,
 ) {
-    val state by viewModel.uiState.collectAsState()
     var selected by remember { mutableStateOf(false) }
-    val accessibilityDescriptionNameWithNumberOfListsSelected: String =
-        " $name" + "is Selected, and total of " + state.countGuestsHaveReservation + "guests are selected "
-    val accessibilityDescriptionNameWithNumberOfListsUnSelected: String =
-        " $name" + "is Un Selected , and total of " + state.countGuestsHaveReservation + "guests are selected "
+    val accessibilityDescriptionSelected: String =
+        " $name" + "is Selected "
+    val accessibilityDescriptionUnSelected: String =
+        " $name" + "is Un Selected "
     Row(horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .semantics(mergeDescendants = true) {}
             .semantics {
                 stateDescription = if (selected) {
-                    accessibilityDescriptionNameWithNumberOfListsSelected
+                    accessibilityDescriptionSelected
                 } else {
-                    accessibilityDescriptionNameWithNumberOfListsUnSelected
+                    accessibilityDescriptionUnSelected
                 }
             }
             .toggleable(value = selected, role = Role.Checkbox, onValueChange = {

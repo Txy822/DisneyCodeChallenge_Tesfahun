@@ -37,7 +37,8 @@ fun ConfirmationScreen(navController: NavController, viewModel: SelectGuestsView
                 fontSize = 40.sp,
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.padding(200.dp))
+            //need improvement
+            Spacer(modifier = Modifier.padding(300.dp))
             Button(
                 onClick = { navController.navigateUp() },
                 colors = ButtonDefaults.buttonColors(

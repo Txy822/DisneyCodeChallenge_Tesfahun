@@ -31,7 +31,8 @@ fun  ConflictScreen(navController: NavController, viewModel: SelectGuestsViewMod
         Column( Modifier.align(alignment = Alignment.Center)) {
             Text(text = "Conflict Screen",
                 fontSize = 40.sp, modifier = Modifier.align(alignment = Alignment.CenterHorizontally))
-            Spacer(modifier = Modifier.padding(200.dp))
+            //need improvement
+            Spacer(modifier = Modifier.padding(300.dp))
             Button(onClick = { navController.navigateUp()},
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.Black),
