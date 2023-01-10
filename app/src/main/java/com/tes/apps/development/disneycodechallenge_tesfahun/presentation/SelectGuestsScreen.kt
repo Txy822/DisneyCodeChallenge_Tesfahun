@@ -257,7 +257,7 @@ fun SingleGuestNeedReserve(
     Row(horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .semantics(mergeDescendants = true) {}
-            .clearAndSetSemantics {
+            .semantics {
                 stateDescription = if (selected) {
                     accessibilityDescriptionNameWithNumberOfListsSelected
                 } else {
@@ -304,7 +304,7 @@ fun SingleGuestHaveReserve(
     Row(horizontalArrangement = Arrangement.Center,
         modifier = Modifier
             .semantics(mergeDescendants = true) {}
-            .clearAndSetSemantics {
+            .semantics {
                 stateDescription = if (selected) {
                     accessibilityDescriptionNameWithNumberOfListsSelected
                 } else {
